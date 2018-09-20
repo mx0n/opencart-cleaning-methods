@@ -24,10 +24,16 @@
         <h3 class="panel-title"><i class="fa fa-cogs"></i> <?php echo $heading_title; ?></h3>
       </div>
       <div class="panel-body">
-		<p><?php echo $placeholder; ?></p>
-		<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-cleaning_db" class="form-horizontal">
-          
-        </form>
+    <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data" id="form-cleaning_db" class="form-horizontal">
+    </form>
+
+		<form action="<?php echo $clean_products; ?>" method="post" enctype="multipart/form-data" id="clean-products" class="form-horizontal col-sm-3">
+      <input type="submit" class="btn btn-danger" name="delete_products" value="Delete all products" />
+    </form>
+    <form action="<?php echo $clean_categories; ?>" method="post" enctype="multipart/form-data" id="clean-categories" class="form-horizontal col-sm-3">
+    <input type="submit" class="btn btn-danger" name="delete_categories" value="Delete all categories" />
+    </form>
+
       </div>
     </div>
   </div>

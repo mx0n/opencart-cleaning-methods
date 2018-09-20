@@ -6,6 +6,8 @@ class ControllerExtensionModuleCleaningDb extends Controller {
 
 	public function index() {
 
+		$this->load->model('extension/module/cleaning_db');
+		
 		//Load language file
     $this->load->language('extension/module/cleaning_db');
 
@@ -23,6 +25,7 @@ class ControllerExtensionModuleCleaningDb extends Controller {
 
 			$this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL'));
 		}
+		
 
 		$text_strings = array(
 				'heading_title',
@@ -46,30 +49,22 @@ class ControllerExtensionModuleCleaningDb extends Controller {
 		}
 
 
-  		$data['breadcrumbs'] = array();
+		$data['breadcrumbs'] = array();
 
-   		$data['breadcrumbs'][] = array(
-       		'text'      => $this->language->get('text_home'),
-			'href'      => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], 'SSL'),
-      		'separator' => false
-   		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+		);
 
-   		$data['breadcrumbs'][] = array(
-       		'text'      => $this->language->get('text_module'),
-			'href'      => $this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL'),
-      		'separator' => ' :: '
-   		);
-
-   		$data['breadcrumbs'][] = array(
-       		'text'      => $this->language->get('heading_title'),
-			'href'      => $this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL'),
-      		'separator' => ' :: '
-   		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('catalog/category', 'token=' . $this->session->data['token'], true)
+		);
 
 		$data['action'] = $this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL');
-
+		$data['clean_products'] = $this->url->link('extension/module/cleaning_db/cleanProducts', 'token=' . $this->session->data['token'], 'SSL');
+		$data['clean_categories'] = $this->url->link('extension/module/cleaning_db/cleanCategory', 'token=' . $this->session->data['token'], 'SSL');
 		$data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL');
-
 
 		//Check if multiple instances of this module
 		$data['modules'] = array();
@@ -93,6 +88,30 @@ class ControllerExtensionModuleCleaningDb extends Controller {
 		$this->response->setOutput($this->load->view('extension/module/cleaning_db.tpl', $data));
 	}
 
+	public function cleanCategory() {
+		$this->load->model('extension/module/cleaning_db');
+
+		if (isset($this->request->post['delete_categories'])) {
+			$this->model_extension_module_cleaning_db->deleteCategories();
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL'));
+		}
+	}
+
+	public function cleanProducts() {
+		$this->load->model('extension/module/cleaning_db');
+
+		if (isset($this->request->post['delete_products'])) {
+			$this->model_extension_module_cleaning_db->deleteProducts();
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL'));
+		}
+		
+	}
 	/*
 	 *
 	 * Check that user actions are authorized
