@@ -63,6 +63,7 @@ class ControllerExtensionModuleCleaningDb extends Controller {
 
 		$data['action'] = $this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL');
 		$data['clean_products'] = $this->url->link('extension/module/cleaning_db/cleanProducts', 'token=' . $this->session->data['token'], 'SSL');
+		$data['clean_selected_products'] = $this->url->link('extension/module/cleaning_db/cleanSelectedProducts', 'token=' . $this->session->data['token'], 'SSL');
 		$data['clean_categories'] = $this->url->link('extension/module/cleaning_db/cleanCategory', 'token=' . $this->session->data['token'], 'SSL');
 		$data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'], 'SSL');
 
@@ -109,9 +110,23 @@ class ControllerExtensionModuleCleaningDb extends Controller {
 			$this->session->data['success'] = $this->language->get('text_success');
 
 			$this->response->redirect($this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL'));
-		}
-		
+		}	
 	}
+
+	public function cleanSelectedProducts() {
+		$this->load->model('extension/module/cleaning_db');
+
+		if (isset($this->request->post['delete_selected_products'])) {
+			foreach ($this->request->post['delete_selected_products'] as $product_model) {
+				$this->model_extension_module_cleaning_db->deleteSelectedProducts($product_model);
+			}
+			
+			$this->session->data['success'] = $this->language->get('text_success');
+
+			$this->response->redirect($this->url->link('extension/module/cleaning_db', 'token=' . $this->session->data['token'], 'SSL'));
+		}	
+	}
+
 	/*
 	 *
 	 * Check that user actions are authorized
